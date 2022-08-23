@@ -1,24 +1,62 @@
+let color = 'black';
+
 document.addEventListener("DOMContentLoaded", function () {
-    createBox(32);
+    createBoard(32);
+
+    let btn_popup = document.querySelector('#popup');
+    btn_popup.addEventListener("click", function () {
+        let size = getSize()
+        createBoard(size)
+    })
 })
+console.log("HELLO")
 
-function createBox(size) {
-    const board = document.querySelector('.board')
-    board.style.gridTemplateColumns = `repeat (${size} , 1fr)`
-    board.style.gridTemplateRows = `repeat (${size} , 1fr)`
-    let numDiv = size * size
+function createBoard(size) {
+    let board = document.querySelector(".board");
 
-    for (let i = 0; i < numDiv; i++) {
-        let div = document.createElement('div');
-        div.style.backgroundColor = 'yellow'
-        board.insertAdjacentElement("beforeend", div);
+    board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+    let numDivs = size * size;
+    for (let i = 0; i < numDivs; i++) {
+        let div = document.createElement("div");
+        div.addEventListener("mouseover", colorDiv)
+        board.insertAdjacentElement("beforeend", div)
+    }
+
+
+}
+
+
+function getSize() {
+    let input = prompt("type your size");
+
+    let message = document.querySelector('#message');
+    if (input == "") {
+        message.innerHTML = 'please provide a number'
+    } else if (input < 0 || input > 100) {
+        message.innerHTML = 'provide a number between 1 and 100'
+    } else {
+        message.innerHTML = "now you can play"
+        return input;
     }
 }
 
-function color () {
-    board.addEventListener("mouseover", function(){
-        div.style.backgroundColor = 'black'
+function colorDiv() {
+    if (color == "random") {
+        this.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`
+    } else {
+        this.style.backgroundColor = 'black'
+    }
+}
+function setColor(colorChoice) {
+    color = colorChoice
+}
+setColor()
+
+function setReset () {
+    let divs = document.querySelectorAll("div")
+    divs.forEach(div=>{
+        div.style.backgroundColor = "white"
     })
 }
-
-
